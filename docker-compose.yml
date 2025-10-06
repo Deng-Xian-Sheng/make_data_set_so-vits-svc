@@ -1,14 +1,13 @@
 version: '3'
 services:
-  model-scope-py3.8:
-    image: 63b8df96896c
-    command: bash
+  big-dl-llm:
+    image: intelanalytics/bigdl-llm-cpu:2.5.0-SNAPSHOT
     volumes:
       - "./:/root/make_data_set_so-vits-svc"
-      - "/mnt/wslg/:/mnt/wslg/"
+      - "${HOME}/llm:/llm/models"
     tty: true
     stdin_open: true
-    # ports:
-    #   - "8080:8080"
-    environment:
-      - PULSE_SERVER=${PULSE_SERVER}
+    ports:
+      - "10001:12345"
+    cpuset: "0-19"
+    mem_limit: "8G"

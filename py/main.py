@@ -352,17 +352,17 @@ class AudioReviewInterface:
             progress = audio_play_to_GUI_scale_queue2.recv()
             self.scale.set(progress)
 
+    def _update(self):
+        if local_data_exit_flag.get():
+            self.root.destroy()
+            return
+        self.update_from_audio_play()
+        self.root.after(10, self._update)  # 每10ms调用一次
+
     # 修改 mainloop 方法
     def mainloop(self):
-        """重写 mainloop 方法以包含定时检查"""
-        while True:
-            if local_data_exit_flag.get():
-                self.root.destroy()
-                break
-
-            self.root.update_idletasks()
-            self.root.update()
-            self.update_from_audio_play()
+        self._update()
+        self.root.mainloop()
 
     def to_audio_play_scale_queue(self, event):
         GUI_to_audio_play_scale_queue1.send(self.scale.get())
@@ -603,23 +603,23 @@ if __name__ == "__main__":
     if os.path.exists(PROCESSD_AUDIO_FILE):
         load_data(PROCESSD_AUDIO_FILE, local_data_processd_audio)
 
-    # atexit.register(exit_handler)
+    atexit.register(exit_handler)
 
-    # GUIToProcessThread().start()
+    GUIToProcessThread().start()
 
     AudioPlay().start()
 
-    # ProcessThreadToGUI().start()
+    ProcessThreadToGUI().start()
 
-    thread_to_GUI_queue.put(
-        {
-            "audio_list": [
-                AudioSegment.from_file(
-                    "../data/Govi - Romance Dance.mp3", format=AUDIO_FORMAT
-                )
-            ],
-            "audio_name": "Govi - Romance Dance",
-        }
-    )
+    # thread_to_GUI_queue.put(
+    #     {
+    #         "audio_list": [
+    #             AudioSegment.from_file(
+    #                 "../data/Govi - Romance Dance.mp3", format=AUDIO_FORMAT
+    #             )
+    #         ],
+    #         "audio_name": "Govi - Romance Dance",
+    #     }
+    # )
 
     AudioReviewInterface().mainloop()
