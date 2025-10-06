@@ -20,7 +20,7 @@ python:
 
 4. [x] Scientific segmentation of audio
 5. [ ] Solve the problem of multiple speakers with the help of Alibaba Cloud DAMO Academy's speaker recognition model
-6. [ ] Have a human examine the dataset
+6. [x] Have a human examine the dataset
 
 ## QA
 
