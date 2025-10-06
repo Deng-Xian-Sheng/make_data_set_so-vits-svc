@@ -42,7 +42,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	err = yaml.Unmarshal(yamlFile, &ConfigModel)
+	err = yaml.Unmarshal(yamlFile, ConfigModel)
 	if err != nil {
 		panic(err)
 	}

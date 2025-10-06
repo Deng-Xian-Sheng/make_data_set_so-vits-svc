@@ -13,6 +13,10 @@ package main
 import (
 	"flag"
 	"log"
+	"make_data_set_so-vits-svc/py/web_rtc/pion-to-pion/answer"
+	"make_data_set_so-vits-svc/py/web_rtc/pion-to-pion/offer"
+	"make_data_set_so-vits-svc/py/web_rtc/pion-to-pion/signal"
+	"net/url"
 	"os"
 )
 
@@ -28,12 +32,14 @@ func main() {
 	flag.BoolVar(&isAnswer, "answer", false, "设置此标志以指示该程序是answer。")
 	flag.StringVar(&signalServerAddr, "signal-server", "", "要使用的信令服务器的地址，例如：http://localhost:8080。")
 	flag.Parse()
+
 	if !isOffer && !isAnswer {
 		log.Panicln("请说明该程序是offer还是answer。")
 	}
-	if signalServerAddr == "" {
-		log.Panicln("请指定要使用的信令服务器的地址。")
+	if _, err := url.Parse(signalServerAddr); signalServerAddr == "" && err == nil {
+		log.Panicln("请指定要使用的信令服务器正确的地址。")
 	}
+
 	if isOffer {
 		log.Println("这是一个offer。")
 	} else {
@@ -41,5 +47,12 @@ func main() {
 	}
 	log.Println("信令服务器地址：", signalServerAddr)
 
-	// TODO
+	signal.Adder = signalServerAddr
+	if isOffer {
+		signal.Now = signal.Offer
+		offer.Offer()
+	} else {
+		signal.Now = signal.Answer
+		answer.Answer()
+	}
 }

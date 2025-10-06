@@ -158,26 +158,54 @@ func getAge(t string) int {
 	return age
 }
 
+func GetAge(t string) int {
+	return getAge(t)
+}
+
 func Download(kugouModel []*model.KuGouModel) (err error) {
-	num := 1
-	for _, v := range kugouModel {
-		for _, vv := range v.Data {
-			link, err2 := getLink(fmt.Sprint(vv.AlbumAudioId))
-			err = err2
-			if err != nil || link == "" {
-				link, err = getBackUpLink(fmt.Sprint(vv.AlbumAudioId))
-				if err != nil || link == "" {
-					log.Println("下载链接错误", vv.AudioName, err)
-					continue
-				}
-			}
-			err = download(link, fmt.Sprintf("%d-%d-%s-%s", num, getAge(vv.PublishDate), vv.PublishDate, fmt.Sprint(vv.AudioName, filepath.Ext(link))))
-			if err != nil {
-				log.Println("下载错误", err)
-				continue
-			}
-			num++
-		}
-	}
-	return
+    num := 1
+    for _, v := range kugouModel {
+        for _, vv := range v.Data {
+            link, err2 := getLink(fmt.Sprint(vv.AlbumAudioId))
+            if err2 != nil {
+                log.Println("获取下载链接错误", vv.AudioName, err2)
+                continue
+            }
+            if link == "" {
+                link, err2 = getBackUpLink(fmt.Sprint(vv.AlbumAudioId))
+                if err2 != nil {
+                    log.Println("获取备用下载链接错误", vv.AudioName, err2)
+                    continue
+                }
+                if link == "" {
+                    log.Println("下载链接为空", vv.AudioName)
+                    continue
+                }
+            }
+            filename := fmt.Sprintf("%d-%d-%s-%s%s", num, getAge(vv.PublishDate), vv.PublishDate, sanitize(vv.AudioName), filepath.Ext(link))
+            err2 = download(link, filename)
+            if err2 != nil {
+                log.Println("下载错误", err2)
+                continue
+            }
+            num++
+        }
+    }
+    return
+}
+
+func sanitize(name string) string {
+    // 替换文件名中的非法字符
+    return strings.Map(func(r rune) rune {
+        switch r {
+        case '\\', '/', ':', '*', '?', '"', '<', '>', '|':
+            return '_'
+        default:
+            return r
+        }
+    }, name)
+}
+
+func Sanitize(name string) string {
+	return sanitize(name)
 }

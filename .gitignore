@@ -9,3 +9,16 @@ config.yaml
 /*.json
 *.pyc
 /py/web_rtc/signal-server/docs/*
+**/large-v3.pt
+**/*.safetensors
+**/*.bin
+venv
+
+/test/separated
+/test/0-14-2024-10-30-去有风的地方.mp3
+/test/富士山下.mp3
+/test/今天-伴奏.mp3
+/test/可不可以.mp3
+/test/罗翔唱《今天》.mp4
+/test/若月亮没来.mp3
+/test/A Thousand Years.mp3

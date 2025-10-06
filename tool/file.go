@@ -36,6 +36,11 @@ func FuzzySearchFiles(dir string, nameList []string) (result []string, err error
 	return
 }
 
+//这是一个 Go 语言的函数，它接受三个字符串参数 aDir、bDir 和 cDir。
+//它调用 GetFolderAllFiles 函数来获取 aDir 和 bDir 目录中的所有文件。
+//然后它循环遍历 aDir 和 bDir 中的每个文件，并检查 aDir 中文件的基本名称是否与 bDir 中文件的基本名称相同。
+//如果它们相同，它调用 Copy 函数将文件从 aDir 复制到 cDir，并使用相同的名称。
+//如果任何操作失败，该函数将返回一个错误。
 func PlaceFilesWithTheSameNameAsFolderAAndFolderBInFolderC(aDir, bDir, cDir string) (err error) {
 	aFiles, err := GetFolderAllFiles(aDir)
 	if err != nil {

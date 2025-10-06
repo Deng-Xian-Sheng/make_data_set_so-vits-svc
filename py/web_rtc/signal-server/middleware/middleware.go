@@ -95,11 +95,11 @@ func Error() gin.HandlerFunc {
 		c.Next()
 		// 如果有错误
 		if len(c.Errors) > 0 {
-			 c.Writer.Write([]byte{})
+			c.Writer.Write([]byte{})
 			// 返回错误
 			l := make([]string, len(c.Errors))
 			for i, v := range c.Errors {
-				l[i] = v.Error()
+				l[i] = strings.TrimSpace(v.Error())
 			}
 			c.AbortWithStatusJSON(200, model.GeneralRes{Msg: strings.Join(l, ",")})
 			return

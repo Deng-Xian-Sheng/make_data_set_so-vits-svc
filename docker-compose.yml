@@ -1,0 +1,14 @@
+version: '3'
+services:
+  model-scope-py3.8:
+    image: 63b8df96896c
+    command: bash
+    volumes:
+      - "./:/root/make_data_set_so-vits-svc"
+      - "/mnt/wslg/:/mnt/wslg/"
+    tty: true
+    stdin_open: true
+    # ports:
+    #   - "8080:8080"
+    environment:
+      - PULSE_SERVER=${PULSE_SERVER}
