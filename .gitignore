@@ -22,3 +22,12 @@ venv
 /test/罗翔唱《今天》.mp4
 /test/若月亮没来.mp3
 /test/A Thousand Years.mp3
+
+/py/tts_output_audio.wav
+
+*.mp4
+*.wav
+*.mp3
+*.mov
+*.mkv
+*.aac
