@@ -34,3 +34,4 @@ venv
 
 /py/tts_test_AZURE_SPEECH_KEY
 /py/deepseek2api/config.json.token
+/py/trained_model
